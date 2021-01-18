@@ -1,5 +1,3 @@
-import { resolveModuleName } from "typescript";
-
 const fin = () => console.log("Llamada a callback");
 
 const recorrerTexto = async (texto: string, callback: {(): void}, interval: number = 1000) : Promise<number> => {
