@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Desafío 1 con Clases</title>
+</head>
+<body>
+
+    <h1>
+        Codea like a champion 🏍️💨
+    </h1>
+
+    <script>
+
+        /**
+         * Crea una funcion constructora Usuario
+         * @param nombre:string
+         * @param apellido: string
+         * @param libros: Array<{nombre:string,autor:string}>
+         * @param mascotas: Array<string>
+         **/
+        class Usuario { 
+            constructor(nombre,apellido,libros = [],mascotas=[]) {
+                this.nombre = nombre;
+                this.apellido = apellido;
+                this.libros = libros;
+                this.mascotas = mascotas;
+            }
+
+            /**
+         * Devuelve un string con el nombre y el apellido concatenados
+         * */
+        getFullName =  () =>  `${this.nombre} ${this.apellido}`;
+
+        /**
+         * Agrega una mascota al usuario
+         * @param mascota:string,  nombre de la mascota
+         * */
+        addMascota = (mascota) => { 
+            if(!this.mascotas.includes(mascota))
+                this.mascotas.push(mascota) 
+        };
+
+        /**
+         * Devuelve la cantidad de mascotas del usuario
+         * */
+        getMascotas = () => this.mascotas.length;
+
+        /**
+         * Agrega un libro al usuario
+         * @param book:string nombre del libro
+         * @param autor:string nobmre del autor
+         * */
+        addBook = (book,autor) =>{
+            if (!this.libros.some(libro => libro.nombre === book && libro.autor === autor)) 
+                this.libros.push({nombre:book, autor: autor}); 
+        }
+
+        /**
+         * Devuelve los nombres de los libros
+         * return Array<string>
+         * */
+        getBooks = () => {
+            return this.libros.map(function (libro) {
+                return libro.nombre;
+            })
+        }
+        
+        }
+
+        
+        
+
+        let test_usuario = new Usuario("Franco","Toniolo");
+        console.log(test_usuario.getFullName());
+        test_usuario.addMascota("Mascota1");
+        test_usuario.addMascota("Mascota2");
+        test_usuario.addMascota("Mascota3");
+        test_usuario.addMascota("Mascota3");
+        console.log(test_usuario.getMascotas());
+        test_usuario.addBook("libro1","autor1");
+        test_usuario.addBook("libro2","autor2");
+        test_usuario.addBook("libro2","autor2");
+        console.log(test_usuario.getBooks());
+
+
+
+
+
+        // Escribí tu código acá 👆🏼👆🏼
+    </script>
+    
+</body>
+</html>
