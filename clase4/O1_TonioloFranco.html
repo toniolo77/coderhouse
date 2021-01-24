@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+    </head>
+    <body>
+
+        <input type="text" id="mi-input" />
+        <span id="reverso"></span>
+
+        <script type="module">
+            import { fromEvent } from 'https://dev.jspm.io/rxjs@6/_esm2015';
+            const input = document.getElementById('mi-input');
+            const mirror = document.getElementById('reverso');
+            let text='';
+            let mirrorText='';
+            
+            const observable = fromEvent(input,'keyup');
+
+            const allowedCharacter = (asciiLetter) => 
+                (asciiLetter >= 32 && asciiLetter <=90 || asciiLetter == 8) 
+
+            const clean = () => {
+                subscription.unsubscribe();
+                text='';
+                mirrorText='';
+                mirror.textContent=mirrorText;
+                input.value= text;
+                input.disabled =true;
+            }
+            
+
+            const subscription = observable.subscribe( 
+                event => {
+                    const {key, which} = event;
+                    if (allowedCharacter(which)) { 
+                        //Si se ingresa el caracter de backspace se elimina la letra y sino se concatena
+                        text = (which == 8) ? text.slice(0, -1) : `${text}${key}`;
+
+                        if (text === 'error') subscription.error('Se ingreso la palabra "error"');
+                        if (text === 'complete') subscription.complete();
+
+                        mirrorText= text.split('').reverse().join('');
+                        mirror.textContent = mirrorText;
+                    } 
+                },
+                error => {
+                    console.log(error);
+                    clean();
+                },
+                complete  => {
+                    console.log('Se ingreso la palabra "complete"');
+                    clean();
+                }
+            )
+
+            setTimeout(()=> {
+                console.log("Paso el tiempo");
+                clean();
+            },30000)
+        </script>
+    </body>
+</html>
