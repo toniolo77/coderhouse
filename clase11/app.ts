@@ -15,18 +15,9 @@ const server= app.listen(PORT, () => {
 }).on("error", error => console.log(`Se produjo un error al iniciar el servidor ${error}`));
 
 
-app.engine(
-    "hbs",  //nombre referencia a la plantilla (se usa luego en set)
-    handlebars({ //funcion de configuracion handlebars
-        extname: ".hbs", // Extension a utilizar en lugar de .handlebars(por defecto)
-        defaultLayout: 'index.hbs', //plantilla principal
-        layoutsDir: __dirname + '/views/layouts', // ruta a la plantilla principal
-        partialsDir: __dirname + '/views/partials/', //ruta a las plantillas parciales
-    })
-);
 
 //Establecemos el motor de plantillas que se utiliza
-app.set("view engine","hbs");
+app.set("view engine","ejs");
 //Establecemos directorio donde se encuentran los archivos de plantilla
 app.set("views","./views");
 

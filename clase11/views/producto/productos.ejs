@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+</html>
+<body>
+    <div class="container">
+        <h1 class="main-title">Vista de productos </h1>
+        <%if (productos.length) {%>
+            <table class="table table-bordered tabla-productos">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Foto</th>
+                </tr>
+                <% productos.forEach(function(producto) {%>
+                    <tr>
+                        <td class="vertical-middle"> <%= producto.title %> </td>
+                        <td class="vertical-middle"> <%= producto.price %> </td>
+                        <td class="vertical-middle"> <img src="<%= producto.thumbnail %>" class="img-responsive icons-custom" alt=" Imagen no encontrada "> </td>
+                    </tr>
+                <% }); %>
+            </table>
+        <% } else { %>
+            <p class="bg-warning sin-productos"> No se encontraron productos</p>
+        <% } %>
+    </div>
+</body>
