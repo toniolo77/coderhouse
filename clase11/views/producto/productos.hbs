@@ -1,0 +1,19 @@
+<h1 class="main-title">Vista de productos </h1>
+{{#if productos.length}}
+    <table class="table table-bordered tabla-productos">
+        <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Foto</th>
+        </tr>
+        {{#each productos}}
+            <tr>
+                <td class="vertical-middle"> {{this.title}} </td>
+                <td class="vertical-middle"> {{this.price}} </td>
+                <td class="vertical-middle"> <img src="{{this.thumbnail}}" class="img-responsive icons-custom" alt=" Imagen no encontrada "> </td>
+            </tr>
+        {{/each}}
+    </table>
+{{else}}
+    <p class="bg-warning sin-productos"> No se encontraron productos</p>
+{{/if}}
