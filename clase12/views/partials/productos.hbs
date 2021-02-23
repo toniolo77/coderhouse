@@ -1,0 +1,67 @@
+<table id='tabla_producto' class="table table-bordered tabla-productos {{#if_equal productos.length  0}} hidden {{/if_equal}}">
+    <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Foto</th>
+    </tr>
+    {{#each productos}}
+    <tr>
+        <td class="vertical-middle"> {{this.title}} </td>
+        <td class="vertical-middle"> {{this.price}} </td>
+        <td class="vertical-middle"> <img src="{{this.thumbnail}}" class="img-responsive icons-custom"
+                alt=" Imagen no encontrada "> </td>
+    </tr>
+    {{/each}}
+</table>
+
+<p  id="sin_productos" class="bg-warning sin-productos {{#if productos.length}} hidden {{/if}}"> No se encontraron productos</p>
+
+<script>
+    const tabla_producto = document.getElementById('tabla_producto');
+
+    const iniciarTabla = () =>{
+        tabla_producto.classList.remove("hidden");
+        document.getElementById('sin_productos').classList.add("hidden");
+    }
+
+    const sinProductos = () => {
+        return tabla_producto.classList.contains("hidden");
+    }
+    
+
+    const crearImagenTag = (src) => {
+        const img = document.createElement("IMG");
+        img.src= src;
+        img.className = 'img-responsive icons-custom';
+        img.alt= " Imagen no encontrada ";
+        return img;
+    }
+
+    const crearCelda = (row, index) => {
+        nueva_celda = row.insertCell(index);
+        nueva_celda.className = "vertical-middle";
+        return nueva_celda;
+    }
+    
+    const agregarProducto = (nuevo_producto) => {
+        //Creo una nueva fila al final
+        const row = tabla_producto.insertRow(-1);
+
+        //Creo las celdas vacias
+        const title_cell = crearCelda(row,0); 
+        const price_cell = crearCelda(row,1);
+        const thumbnail_cell = crearCelda(row,2);
+        
+        //Agregar text a las celdas
+        title_cell.innerHTML = nuevo_producto.title;
+        price_cell.innerHTML = nuevo_producto.price;
+        thumbnail_cell.appendChild(crearImagenTag(nuevo_producto.thumbnail))
+    }
+
+    socket.on('producto_agregado', data => {
+        if (sinProductos()) iniciarTabla();
+        if (data) {
+            agregarProducto(data);
+        }
+    })
+</script>

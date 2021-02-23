@@ -1,0 +1,28 @@
+.main-title { 
+    margin: 5rem 0rem;
+    text-align: center;
+}
+.icons-custom{
+    max-height: 3rem;
+}
+
+.vertical-middle {
+    vertical-align: middle !important;
+}
+
+.tabla-productos{
+    margin-top: 2rem;
+}
+
+.sin-productos {
+    padding: 2rem;
+}
+
+
+.button-submit {
+    margin-top: 2rem;
+}
+
+.hidden { 
+    display: none;
+}
