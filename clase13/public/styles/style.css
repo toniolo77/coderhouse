@@ -1,0 +1,64 @@
+.main-title { 
+    margin: 4rem 0rem;
+    text-align: center;
+    color: #5e5ee0;
+}
+.icons-custom{
+    max-height: 3rem;
+}
+
+.vertical-middle {
+    vertical-align: middle !important;
+}
+
+.tabla-productos{
+    margin-top: 2rem;
+    background-color: #fff;
+}
+
+.sin-productos {
+    padding: 2rem;
+}
+
+
+.button-submit {
+    margin-top: 2rem;
+}
+
+.hidden { 
+    display: none;
+}
+
+.flex {
+    display: flex;
+}
+
+.separator {
+    margin-top: 5rem; 
+}
+
+.card-container {
+    background-color: #eee;
+    padding: 2rem;
+}
+
+/************ CHAT STYLES **********/
+
+.row_mensaje {
+    margin-bottom: 0.8rem;
+}
+
+.remitente { 
+    font-weight: bold;
+    color: blue;
+}
+
+.fecha {
+    color: brown;
+}
+
+.mensaje_enviado {
+    color: green;
+    font-style: italic;
+}
+

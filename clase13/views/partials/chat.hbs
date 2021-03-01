@@ -1,0 +1,84 @@
+<h1 class="main-title">Centro de mensajes </h1>
+<form class="form-horizontal" id="chat_form">
+    <div class="form-group">
+        <label for="email" class="col-sm-2 control-label"> Email:</label>
+        <div class="col-sm-10">
+            <input type="email" class="form-control" id="email_form" placeholder="Email" name="email" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="mensaje" class="col-sm-2 control-label"> Mensaje:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="mensaje_form" placeholder="Mensaje" name="mensaje" required />
+        </div>
+    </div>
+
+    <div class="form-group button-submit">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-success">Enviar</button>
+        </div>
+    </div>
+
+
+    <div id="mensajes_chat" class="separator">
+        {{#each mensajes}}
+            <div class="flex row_mensaje">
+                <span class="col-sm-3 remitente"> {{this.email}} </span>
+                <span class="col-sm-2 fecha">[ {{this.fecha}} ]:  </span>
+                <span class="col-sm-7 mensaje_enviado">{{this.mensaje}} </span>
+            </div>
+        {{/each}}
+    </div>
+
+</form>
+
+<script>
+    const form_chat= document.getElementById("chat_form");
+    const mensaje =document.getElementById("mensaje_form");
+    const mensajes_chat =document.getElementById("mensajes_chat");
+    const email =document.getElementById("email_form");
+
+    const isFormCompleteChat = () => {
+        return (mensaje.value && email.value);
+    }
+
+    const cleanFormChat = () => {
+        mensaje.value='';
+    }
+
+    const createColumn = (mensaje, clases) => {
+        const span = document.createElement('span');
+        span.innerHTML = mensaje;
+        span.classList= clases;
+        return span;
+    }
+
+    const agregarMensaje = (nuevo_mensaje) => {
+        const mensaje_container= document.createElement('div');
+        mensaje_container.classList= 'flex';
+        
+        mensaje_container.appendChild(createColumn(nuevo_mensaje.email,"col-sm-3 remitente"));
+        mensaje_container.appendChild(createColumn(`[ ${nuevo_mensaje.fecha} ]: `,"col-sm-2 fecha "));
+        mensaje_container.appendChild(createColumn(nuevo_mensaje.mensaje,"col-sm-7 mensaje_enviado"));
+
+        mensajes_chat.appendChild(mensaje_container);
+
+    }
+
+    form_chat.addEventListener("submit",(event) => {
+        event.preventDefault();
+        if (isFormCompleteChat()) {
+            socket.emit('agregar_mensaje',{email: email.value, mensaje: mensaje.value})
+            cleanFormChat();
+        } else {
+            alert("Debe completar todos los campos");
+        }
+
+    })
+
+    socket.on('mensaje_agregado', data => {
+        if (data) {
+            agregarMensaje(data);
+        }
+    })
+</script>
