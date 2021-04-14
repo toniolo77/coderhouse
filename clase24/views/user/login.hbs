@@ -1,0 +1,42 @@
+
+{{#with err}}
+    <div class="alert alert-danger separator" role="alert">
+    Ha ingresado mal las credenciales, por favor intentelo de nuevo
+    </div>
+{{/with}}
+
+<div class='card-container separator'>
+    <h1 class="main-title">Login de Usuario</h1>
+    <form class="form-horizontal" id="login_form" action="login" method="POST">
+        <div class="form-group col-sm-12 ">
+            <label for="user" class="col-sm-3 control-label"> Usuario:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="user_login" placeholder="User" name="user" required />
+            </div>
+        </div>
+        <div class="form-group col-sm-12 ">
+            <label for="password" class="col-sm-3 control-label"> Contraseña:</label>
+            <div class="col-sm-9">
+                <input type="password" class="form-control" id="password_login" placeholder="Password" name="password" required />
+            </div>
+        </div>
+
+        <div class="form-group button-submit">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-success">Enviar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    const formLogin = document.getElementById("login_form");
+    const userLogin = document.getElementById("user_login");
+    const passwordLogin = document.getElementById("password_login");
+
+    const isFormCompleteLogin = () => {
+        return (userLogin.value && passwordLogin.value);
+    }
+
+</script>
