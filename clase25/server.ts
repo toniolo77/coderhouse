@@ -24,7 +24,7 @@ app.use(session({
     host: 'localhost',
     port: 6379,
     client: client,
-    ttl: 20
+    ttl: 600 //60s*10
   }),
   secret: 'secreto',
   resave: false,
