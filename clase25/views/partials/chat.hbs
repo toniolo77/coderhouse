@@ -1,0 +1,162 @@
+<h1 class="main-title">Centro de mensajes <span id="compresion_mensaje"> </span> </h1>
+<form class="form-horizontal" id="chat_form">
+    <div class="form-group col-md-6 ">
+        <label for="email" class="col-md-2 control-label"> Email:</label>
+        <div class="col-md-10">
+            <input type="email" class="form-control" id="email_form" placeholder="Email" name="email" required />
+        </div>
+    </div>
+    <div class="form-group col-md-6 ">
+        <label for="nombre" class="col-md-2 control-label"> nombre:</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="nombre_form" placeholder="nombre" name="nombre" required />
+        </div>
+    </div>
+    <div class="form-group col-md-6 ">
+        <label for="apellido" class="col-md-2 control-label"> apellido:</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="apellido_form" placeholder="apellido" name="apellido"
+                required />
+        </div>
+    </div>
+    <div class="form-group col-md-6 ">
+        <label for="edad" class="col-md-2 control-label"> edad:</label>
+        <div class="col-md-10">
+            <input type="number" class="form-control" id="edad_form" placeholder="edad" name="edad" required />
+        </div>
+    </div>
+    <div class="form-group col-md-6 ">
+        <label for="alias" class="col-md-2 control-label"> alias:</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="alias_form" placeholder="alias" name="alias" required />
+        </div>
+    </div>
+    <div class="form-group col-md-6 ">
+        <label for="avatar" class="col-md-2 control-label"> avatar:</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="avatar_form" placeholder="avatar" name="avatar" required />
+        </div>
+    </div>
+
+    <div class="form-group col-md-12 ">
+        <label for="mensaje" class="col-md-1 control-label"> Mensaje:</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="mensaje_form" placeholder="Mensaje" name="mensaje" required />
+        </div>
+    </div>
+
+    <div class="form-group button-submit">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-success">Enviar</button>
+        </div>
+    </div>
+
+
+    <div id="mensajes_chat" class="separator">
+    </div>
+
+</form>
+
+<script>
+    const normalizrModule = window.normalizr;
+    const form_chat = document.getElementById("chat_form");
+    const mensaje = document.getElementById("mensaje_form");
+    const mensajes_chat = document.getElementById("mensajes_chat");
+    const email = document.getElementById("email_form");
+    const nombre = document.getElementById("nombre_form");
+    const apellido = document.getElementById("apellido_form");
+    const edad = document.getElementById("edad_form");
+    const alias = document.getElementById("alias_form");
+    const avatar = document.getElementById("avatar_form");
+
+    //Decode message
+    const decodedMessage = decodeURIComponent("{{{mensajes}}}");
+    const messageNormalize = JSON.parse(decodedMessage);
+
+
+    const calculeCompresion = (message_normalize, message_denormalize) => {
+        console.log("Objecto normalizado", JSON.stringify(message_normalize).length);
+        console.log("Objecto desnormalizado", JSON.stringify(message_denormalize).length);
+        const compresion= Math.trunc( 100 -(JSON.stringify(message_normalize).length * 100) / JSON.stringify(message_denormalize).length);
+        if (compresion) 
+            document.getElementById("compresion_mensaje").innerHTML = `(Compresion: ${compresion}%)`;
+    }
+
+
+    //Desnormalize messages
+    const user = new normalizrModule.schema.Entity("user", {}, { idAttribute: 'email' });
+    const chatSchema = new normalizrModule.schema.Entity("chat", {
+        author: user,
+    }, { idAttribute: '_id' });
+    const mensajesDesnormalizados = normalizrModule.denormalize(messageNormalize.result, [chatSchema], messageNormalize.entities)
+
+
+    const isFormCompleteChat = () => {
+        return (mensaje.value && email.value && nombre.value && apellido.value && edad.value && alias.value && avatar.value);
+    }
+
+    const cleanFormChat = () => {
+        mensaje.value = '';
+    }
+
+    const createColumn = (message, clases, child) => {
+        const span = document.createElement('span');
+        span.innerHTML = message;
+        span.classList = clases;
+        if (child) span.appendChild(child);
+        return span;
+    }
+
+    const createIcon = (src) => {
+        const img = document.createElement("IMG");
+        img.src = src;
+        img.className = 'img-responsive icons-custom';
+        img.alt = "";
+        return img;
+    }
+
+
+    const addMessage = (new_message) => {
+        const message_container = document.createElement('div');
+        message_container.classList = 'flex flex-center';
+
+        message_container.appendChild(createColumn(new_message.author.email, "col-sm-3 remitente"));
+        message_container.appendChild(createColumn(`[ ${new_message.fecha} ]: `, "col-sm-2 fecha "));
+        const avatar = (new_message.author.avatar) ? createIcon(new_message.author.avatar) : undefined;
+        message_container.appendChild(createColumn(new_message.mensaje, "col-sm-7 mensaje_enviado flex flex-center", avatar));
+
+        mensajes_chat.appendChild(message_container);
+
+    }
+
+    mensajesDesnormalizados.forEach(m => {
+        addMessage(m);
+    });
+
+    calculeCompresion(messageNormalize,mensajesDesnormalizados);
+
+    form_chat.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (isFormCompleteChat()) {
+            socket.emit('agregar_mensaje', {
+                email: email.value,
+                nombre: nombre.value,
+                apellido: apellido.value,
+                edad: edad.value,
+                alias: alias.value,
+                avatar: avatar.value,
+                mensaje: mensaje.value,
+            })
+            cleanFormChat();
+        } else {
+            alert("Debe completar todos los campos");
+        }
+
+    })
+
+    socket.on('mensaje_agregado', data => {
+        if (data) {
+            addMessage(data);
+        }
+    })
+</script>
