@@ -1,0 +1,24 @@
+<div class='card-container separator'>
+    <h1 class="main-title">Registro de Usuario</h1>
+    <form class="form-horizontal" id="register_form" action="register" method="POST">
+        <div class="form-group col-sm-12 ">
+            <label for="user" class="col-sm-3 control-label"> Usuario:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="user_register" placeholder="User" name="username" required />
+            </div>
+        </div>
+        <div class="form-group col-sm-12 ">
+            <label for="password" class="col-sm-3 control-label"> Contraseña:</label>
+            <div class="col-sm-9">
+                <input type="password" class="form-control" id="password_register" placeholder="Password" name="password" required />
+            </div>
+        </div>
+
+        <div class="form-group button-submit">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-success">Enviar</button>
+                <button  class="btn btn-success"  onclick="location.href='/user/login'" >Login</button> 
+            </div>
+        </div>
+    </form>
+</div>
