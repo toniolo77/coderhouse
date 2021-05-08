@@ -16,29 +16,16 @@ import { fork } from "child_process";
 const MongoStore = require("connect-mongo");
 
 // const MongoStore = connectMongo(session);
-export const initServer = () => {
+export const initServer = (
+  PORT,
+  FACEBOOK_CLIENT_ID,
+  FACEBOOK_CLIENT_SECRET
+) => {
   const app: Application = express();
   const http_server = new http.Server(app);
   const io = require("socket.io")(http_server);
   const client = redis.createClient();
   const RedisStore = require("connect-redis")(session);
-
-  let PORT = 8080;
-  let FACEBOOK_CLIENT_ID = "125727899514372";
-  let FACEBOOK_CLIENT_SECRET = "b4537505bae78c5ed3fc13e87f9f489b";
-  process.argv.forEach((val, index) => {
-    switch (index) {
-      case 2:
-        PORT = Number(val) || PORT;
-        break;
-      case 3:
-        FACEBOOK_CLIENT_ID = val ?? FACEBOOK_CLIENT_ID;
-        break;
-      case 4:
-        FACEBOOK_CLIENT_SECRET = val ?? FACEBOOK_CLIENT_SECRET;
-        break;
-    }
-  });
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true })); //Para interpretar los objectos recibidos y que no sean solo cadenas
