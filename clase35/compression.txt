@@ -1,0 +1,3 @@
+/info sin comprimir : 1.9kB
+/info comprimido: 949B
+
